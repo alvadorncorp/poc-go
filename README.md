@@ -1,0 +1,45 @@
+# Poc go
+
+Esse repositório é para teste de conhecimento em golang, que será feito de forma evolutiva por tarefas!
+
+## TECH-1
+
+Requisitos:
+Criar um endpoint /auth/signin que é um endpoint POST
+
+Aceita como parametros um json com o seguinte formato:
+
+```json
+{
+"user": <user>,
+"password": <password>
+}
+```
+
+O usuario e senha válido, deve ser uma constante do programa, ou seja, não precisa se preocupar com banco de dados nesse primeiro momento, ex:
+
+```go
+var authorizedUser = "pedro"
+
+var authorizedPassword = "senha123"
+```
+
+Para que o usuario e senha sejam válidos, basta checar se o usuario do json é igual ao usuario da variavel authorizedUser e a senha do json é igual a senha do authorizedPassword.
+
+Se a autenticação for com sucesso, deve gerar um token JWT e retornar um payload da seguinte forma:
+{
+"token": <token jwt>
+}
+Se a autenticação falhar, retornar o status 401 com o payload da seguinte forma:
+{
+"error": "authentication_failure"
+}
+Uso de bibliotecas:
+Quero que você utilize essa biblioteca em Go para criar a API: https://github.com/gin-gonic/gin
+Documentação em português: https://gin-gonic.com/pt/docs/
+Essa é uma biblioteca que permite a definição de endpoints em Go, assim como você deve ter feito utilizando a http.Handler ou Gorilla nas video aulas.
+Para geração do JWT, use a seguinte biblioteca:
+https://github.com/golang-jwt/jwt
+Para saber o que é JWT, da uma olhadinha nesse vídeo: https://www.youtube.com/watch?v=sHyoMWnnLGU
+Observação, JWT não depende do Go, ou seja, ele existe independente do Go e quase toda linguagem de programação tem uma biblioteca que gera um token JWT.
+# poc-go
