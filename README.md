@@ -37,8 +37,8 @@ Se a autenticação for com sucesso, deve gerar um token JWT e retornar um paylo
 Se a autenticação falhar, retornar o status 401 com o payload da seguinte forma:
 
 ```json
-}
-"error": "authentication_failure"
+{
+  "error": "authentication_failure"
 }
 ```
 
