@@ -56,3 +56,14 @@ https://github.com/golang-jwt/jwt
 Para saber o que é JWT, da uma olhadinha nesse vídeo: https://www.youtube.com/watch?v=sHyoMWnnLGU
 
 Observação, JWT não depende do Go, ou seja, ele existe independente do Go e quase toda linguagem de programação tem uma biblioteca que gera um token JWT.
+
+## TECH-2
+
+Requisitos:
+Criar um arquivo com um banco de dados interno, no proprio projeto.
+
+Dentro desse arquivo criar um map passando a variavel de usuario e senha, com a chave email.
+
+Criar uma função chamada BuscaUsuario, onde ela precisa encontrar oos usuarios informados no map.
+
+No controller, fazer a verificação e a autenticação do usuario e se passou, autenticar a senha, retornando o tocken.
