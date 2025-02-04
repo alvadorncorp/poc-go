@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"authentication_api/models"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -11,13 +10,12 @@ import (
 var authorizedUser = "pedro"
 var authorizedPassword = "senha123"
 
-var (
-	key []byte
-	T   *jwt.Token
-	S   string
-)
-
-func CreatToken() string {
+func CreateToken() string {
+	var (
+		key []byte
+		T   *jwt.Token
+		S   string
+	)
 	key = []byte("7zZruvzBoMpYCFFsFYMj")
 	T = jwt.New(jwt.SigningMethodHS256)
 	S, _ = T.SignedString(key)
@@ -30,10 +28,9 @@ func Authentication(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
-	fmt.Println(username)
 
 	if username.Username == authorizedUser && username.Password == authorizedPassword {
-		c.JSON(202, gin.H{"message": CreatToken()})
+		c.JSON(200, gin.H{"token": CreateToken()})
 	} else {
 		c.JSON(401, gin.H{"error": "authentication_failure"})
 	}
