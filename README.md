@@ -27,19 +27,32 @@ var authorizedPassword = "senha123"
 Para que o usuario e senha sejam válidos, basta checar se o usuario do json é igual ao usuario da variavel authorizedUser e a senha do json é igual a senha do authorizedPassword.
 
 Se a autenticação for com sucesso, deve gerar um token JWT e retornar um payload da seguinte forma:
+
+```json
 {
 "token": <token jwt>
 }
+```
+
 Se a autenticação falhar, retornar o status 401 com o payload da seguinte forma:
-{
+
+```json
+}
 "error": "authentication_failure"
 }
+```
+
 Uso de bibliotecas:
+
 Quero que você utilize essa biblioteca em Go para criar a API: https://github.com/gin-gonic/gin
+
 Documentação em português: https://gin-gonic.com/pt/docs/
+
 Essa é uma biblioteca que permite a definição de endpoints em Go, assim como você deve ter feito utilizando a http.Handler ou Gorilla nas video aulas.
+
 Para geração do JWT, use a seguinte biblioteca:
 https://github.com/golang-jwt/jwt
+
 Para saber o que é JWT, da uma olhadinha nesse vídeo: https://www.youtube.com/watch?v=sHyoMWnnLGU
+
 Observação, JWT não depende do Go, ou seja, ele existe independente do Go e quase toda linguagem de programação tem uma biblioteca que gera um token JWT.
-# poc-go
