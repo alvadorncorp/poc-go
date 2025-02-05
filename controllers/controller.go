@@ -3,6 +3,7 @@ package controllers
 import (
 	"authentication_api/db"
 	"authentication_api/models"
+	"authentication_api/view"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -38,4 +39,22 @@ func Authentication(c *gin.Context) {
 	} else {
 		c.JSON(401, gin.H{"error": "authentication_failure"})
 	}
+}
+
+func RegistaUsuario(c *gin.Context) {
+	var usuarioJSON models.User
+	if err := c.ShouldBindJSON(&usuarioJSON); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	if err := db.CriaUsuario(usuarioJSON); err != nil {
+		c.JSON(400, gin.H{"error": "Ivaled request"})
+		return
+	}
+	c.JSON(201, gin.H{"message": "Usuario criado com sucesso"})
+}
+
+func ExibeUsuarios(c *gin.Context) {
+	c.JSON(200, view.NewViewUsuario(db.ListarUsuarios()))
 }

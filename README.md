@@ -67,3 +67,11 @@ Dentro desse arquivo criar um map passando a variavel de usuario e senha, com a 
 Criar uma função chamada BuscaUsuario, onde ela precisa encontrar oos usuarios informados no map.
 
 No controller, fazer a verificação e a autenticação do usuario e se passou, autenticar a senha, retornando o tocken.
+
+## TECH-3
+
+Criar uma nova rota do tipo POST, para criar um novo usuario.
+
+Criar essa função no db, e passa-la para o controller.
+
+Verificar o email, nao pode criar um novo usuario com mesmo email.
