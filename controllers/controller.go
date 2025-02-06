@@ -53,6 +53,7 @@ func RegistaUsuario(c *gin.Context) {
 		return
 	}
 	c.JSON(201, gin.H{"message": "Usuario criado com sucesso"})
+	usuarioJSON.Password = db.EncryptPassword(usuarioJSON.Password)
 }
 
 func ExibeUsuarios(c *gin.Context) {

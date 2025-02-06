@@ -2,6 +2,8 @@ package db
 
 import (
 	"authentication_api/models"
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 )
 
@@ -48,4 +50,10 @@ func ListarUsuarios() []models.User {
 	}
 
 	return usuarios
+}
+
+func EncryptPassword(password string) string {
+	hash := md5.New()
+	hash.Write([]byte(password))
+	return hex.EncodeToString(hash.Sum(nil))
 }

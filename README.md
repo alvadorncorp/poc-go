@@ -75,3 +75,7 @@ Criar uma nova rota do tipo POST, para criar um novo usuario.
 Criar essa função no db, e passa-la para o controller.
 
 Verificar o email, nao pode criar um novo usuario com mesmo email.
+
+## TECH-4
+
+salvar senha criptografada
