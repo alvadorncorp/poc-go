@@ -48,6 +48,11 @@ func RegistaUsuario(c *gin.Context) {
 		return
 	}
 
+	if err := usuarioJSON.EncryptPassword(); err != nil {
+		c.JSON(400, gin.H{"error": "Failed to encrypt password"})
+		return
+	}
+
 	if err := db.CriaUsuario(usuarioJSON); err != nil {
 		c.JSON(400, gin.H{"error": "Ivaled request"})
 		return
