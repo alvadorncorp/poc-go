@@ -43,13 +43,13 @@ func Authentication(c *gin.Context) {
 
 func RegistaUsuario(c *gin.Context) {
 	var usuarioJSON models.User
-	if err := c.ShouldBindJSON(&usuarioJSON); err != nil {
-		c.JSON(400, gin.H{"error": "Invalid request"})
+	if err := usuarioJSON.EncryptPassword(); err != nil {
+		c.JSON(400, gin.H{"error": "Failed to encrypt password"})
 		return
 	}
 
-	if err := usuarioJSON.EncryptPassword(); err != nil {
-		c.JSON(400, gin.H{"error": "Failed to encrypt password"})
+	if err := c.ShouldBindJSON(&usuarioJSON); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
 		return
 	}
 

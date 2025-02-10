@@ -2,9 +2,10 @@ package db
 
 import (
 	"authentication_api/models"
-	"crypto/md5"
-	"encoding/hex"
 	"errors"
+	"fmt"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var listaUsuarios = map[string]models.User{
@@ -53,7 +54,9 @@ func ListarUsuarios() []models.User {
 }
 
 func EncryptPassword(password string) string {
-	hash := md5.New()
-	hash.Write([]byte(password))
-	return hex.EncodeToString(hash.Sum(nil))
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return string(hash)
 }
