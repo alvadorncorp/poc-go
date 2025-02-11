@@ -34,7 +34,7 @@ func Authentication(c *gin.Context) {
 		return
 	}
 
-	if usuarioJSON.Password == usuario.Password {
+	if usuario.ComparePassword(usuarioJSON.Password) {
 		c.JSON(200, gin.H{"token": CreateToken()})
 	} else {
 		c.JSON(401, gin.H{"error": "authentication_failure"})
@@ -43,13 +43,14 @@ func Authentication(c *gin.Context) {
 
 func RegistaUsuario(c *gin.Context) {
 	var usuarioJSON models.User
-	if err := usuarioJSON.EncryptPassword(); err != nil {
-		c.JSON(400, gin.H{"error": "Failed to encrypt password"})
-		return
-	}
 
 	if err := c.ShouldBindJSON(&usuarioJSON); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	if err := usuarioJSON.EncryptPassword(); err != nil {
+		c.JSON(400, gin.H{"error": "Failed to encrypt password"})
 		return
 	}
 
@@ -58,7 +59,7 @@ func RegistaUsuario(c *gin.Context) {
 		return
 	}
 	c.JSON(201, gin.H{"message": "Usuario criado com sucesso"})
-	usuarioJSON.Password = db.EncryptPassword(usuarioJSON.Password)
+
 }
 
 func ExibeUsuarios(c *gin.Context) {
