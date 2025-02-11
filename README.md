@@ -87,3 +87,9 @@ O seu container postgres deve ter dados persistentes, ou seja, se você fizer um
 No arquivo main.go instanciar uma conexão com o postgres usando a biblioteca: https://github.com/jackc/pgx
 
 Não precisa alterar nada do código que vc já fez relativo a autenticação, essa primeira tarefa é só pra estabelecer uma comunicação entre um programa feito em go e um container postgres.
+
+## TECH-6
+
+Manter o padrao dos nomes da função, com uma so linguagem.
+
+Criar um banco com postgres
