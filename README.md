@@ -75,3 +75,15 @@ Criar uma nova rota do tipo POST, para criar um novo usuario.
 Criar essa função no db, e passa-la para o controller.
 
 Verificar o email, nao pode criar um novo usuario com mesmo email.
+
+## TECH-4 && TECH-5
+
+salvar senha criptografada
+
+Criar um docker-compose que suba um postgres na versão 17
+
+O seu container postgres deve ter dados persistentes, ou seja, se você fizer um docker-compose down, ele deverá manter os dados anteriores.
+
+No arquivo main.go instanciar uma conexão com o postgres usando a biblioteca: https://github.com/jackc/pgx
+
+Não precisa alterar nada do código que vc já fez relativo a autenticação, essa primeira tarefa é só pra estabelecer uma comunicação entre um programa feito em go e um container postgres.
