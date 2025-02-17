@@ -4,6 +4,7 @@ import (
 	"authentication_api/db"
 	"authentication_api/models"
 	"authentication_api/view"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -28,7 +29,7 @@ func Authentication(c *gin.Context) {
 		return
 	}
 
-	usuario, err := db.BuscaUsuario(usuarioJSON.Email)
+	usuario, err := db.FindUser(usuarioJSON.Email)
 	if err != nil {
 		c.JSON(401, gin.H{"error": "authentication_failure"})
 		return
@@ -41,7 +42,7 @@ func Authentication(c *gin.Context) {
 	}
 }
 
-func RegistaUsuario(c *gin.Context) {
+func RegisterUser(c *gin.Context) {
 	var usuarioJSON models.User
 
 	if err := c.ShouldBindJSON(&usuarioJSON); err != nil {
@@ -54,14 +55,15 @@ func RegistaUsuario(c *gin.Context) {
 		return
 	}
 
-	if err := db.CriaUsuario(usuarioJSON); err != nil {
-		c.JSON(400, gin.H{"error": "Ivaled request"})
+	if err := db.CreateUser(&usuarioJSON); err != nil {
+		fmt.Println(err)
+		c.JSON(400, gin.H{"error": "request failed"})
 		return
 	}
 	c.JSON(201, gin.H{"message": "Usuario criado com sucesso"})
 
 }
 
-func ExibeUsuarios(c *gin.Context) {
-	c.JSON(200, view.NewViewUsuario(db.ListarUsuarios()))
+func DisplaysUser(c *gin.Context) {
+	c.JSON(200, view.NewViewUsuario(db.ListUsers()))
 }
