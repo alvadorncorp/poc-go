@@ -96,6 +96,6 @@ Criar um banco com postgres
 Alterar a conexao do main para o db.
 Modificar a função CreatUser, FindUser and ListUser para o banco de dados atraves do pgx.
 
-Reazlizar o cadastro dentro outros do user
+Modificar a função CreatUser, FindUser and ListUser para o banco de dados atraves do pgx.
 
 ## TECH-7
