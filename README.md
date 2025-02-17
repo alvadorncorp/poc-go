@@ -93,3 +93,9 @@ Não precisa alterar nada do código que vc já fez relativo a autenticação, e
 Manter o padrao dos nomes da função, com uma so linguagem.
 
 Criar um banco com postgres
+Alterar a conexao do main para o db.
+Modificar a função CreatUser, FindUser and ListUser para o banco de dados atraves do pgx.
+
+Reazlizar o cadastro dentro outros do user
+
+## TECH-7

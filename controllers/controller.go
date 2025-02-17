@@ -28,7 +28,7 @@ func Authentication(c *gin.Context) {
 		return
 	}
 
-	usuario, err := db.BuscaUsuario(usuarioJSON.Email)
+	usuario, err := db.SearchUser(usuarioJSON.Email)
 	if err != nil {
 		c.JSON(401, gin.H{"error": "authentication_failure"})
 		return
@@ -41,7 +41,7 @@ func Authentication(c *gin.Context) {
 	}
 }
 
-func RegistaUsuario(c *gin.Context) {
+func RegisterUser(c *gin.Context) {
 	var usuarioJSON models.User
 
 	if err := c.ShouldBindJSON(&usuarioJSON); err != nil {
@@ -54,7 +54,7 @@ func RegistaUsuario(c *gin.Context) {
 		return
 	}
 
-	if err := db.CriaUsuario(usuarioJSON); err != nil {
+	if err := db.CreateUser(usuarioJSON); err != nil {
 		c.JSON(400, gin.H{"error": "Ivaled request"})
 		return
 	}
@@ -62,6 +62,6 @@ func RegistaUsuario(c *gin.Context) {
 
 }
 
-func ExibeUsuarios(c *gin.Context) {
-	c.JSON(200, view.NewViewUsuario(db.ListarUsuarios()))
+func DisplaysUser(c *gin.Context) {
+	c.JSON(200, view.NewViewUsuario(db.ListUsers()))
 }
