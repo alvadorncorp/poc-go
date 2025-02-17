@@ -18,7 +18,7 @@ var listaUsuarios = map[string]*models.User{
 	},
 }
 
-var db *pgx.Conn
+var dbase *pgx.Conn
 
 func Init() {
 	for _, u := range listaUsuarios {
@@ -26,34 +26,44 @@ func Init() {
 	}
 }
 
-func SearchUser(email string) (models.User, error) {
-	if usuario, encontrado := listaUsuarios[email]; encontrado {
-		return *usuario, nil
-	}
-	return models.User{}, errors.New("usuario nao encontrado")
-}
-
-func CreateUser(usuario models.User) error {
-	if _, encontrado := listaUsuarios[usuario.Email]; encontrado {
-		return errors.New("email ja cadastrado")
-	}
-	listaUsuarios[usuario.Email] = &usuario
-	return nil
+func CreateUser(usuario *models.User) error {
+	ctx := context.Background()
+	query := "INSERT INTO users (username, password, email) VALUES ($1, $2, $3)"
+	_, err := dbase.Exec(ctx, query, usuario.Username, usuario.Password, usuario.Email)
+	return err
 }
 
 func FindUser(email string) (models.User, error) {
-	if usuario, encontrado := listaUsuarios[email]; encontrado {
-		return *usuario, nil
+	ctx := context.Background()
+	query := "SELECT username, password, email FROM users WHERE email=$1"
+	row := dbase.QueryRow(ctx, query, email)
+	var usuario models.User
+	err := row.Scan(&usuario.Username, &usuario.Password, &usuario.Email)
+	if err == pgx.ErrNoRows {
+		return models.User{}, errors.New("usuario nao encontrado")
 	}
-	return models.User{}, errors.New("usuario nao encontrado")
+	return usuario, err
 }
 
 func ListUsers() []models.User {
-	usuarios := make([]models.User, 0, len(listaUsuarios))
-	for _, usuario := range listaUsuarios {
-		usuarios = append(usuarios, *usuario)
+	var usuarios []models.User
+	ctx := context.Background()
+	rows, err := dbase.Query(ctx, "SELECT username, password, email FROM users")
+	if err != nil {
+		fmt.Println("Error fetching users:", err)
+		return nil
 	}
+	defer rows.Close()
 
+	for rows.Next() {
+		var usuario models.User
+		err := rows.Scan(&usuario.Username, &usuario.Password, &usuario.Email)
+		if err != nil {
+			fmt.Println("Error scanning row:", err)
+			continue
+		}
+		usuarios = append(usuarios, usuario)
+	}
 	return usuarios
 }
 
@@ -64,7 +74,7 @@ func ConectDB() {
 		fmt.Println("Unable to connect to database:", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	dbase = conn
 
 	var xpto bool
 	err = conn.QueryRow(context.Background(), "SELECT 1=1").Scan(&xpto)
