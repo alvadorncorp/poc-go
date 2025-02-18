@@ -12,5 +12,6 @@ func HandleRequests() {
 	r.POST("/auth", controllers.Authentication)
 	r.GET("/user", controllers.DisplaysUser)
 	r.POST("/user", controllers.RegisterUser)
+	r.PATCH("/user/:id", controllers.ModifyUser)
 	r.Run()
 }

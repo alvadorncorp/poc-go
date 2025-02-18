@@ -10,21 +10,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-var listaUsuarios = map[string]*models.User{
-	"pedro@gmail.com": {
-		Username: "pedro",
-		Password: "senha123",
-		Email:    "pedro@gmail.com",
-	},
-}
-
 var dbase *pgx.Conn
-
-func Init() {
-	for _, u := range listaUsuarios {
-		u.EncryptPassword()
-	}
-}
 
 func CreateUser(usuario *models.User) error {
 	ctx := context.Background()
@@ -48,7 +34,7 @@ func FindUser(email string) (models.User, error) {
 func ListUsers() []models.User {
 	var usuarios []models.User
 	ctx := context.Background()
-	rows, err := dbase.Query(ctx, "SELECT username, password, email FROM users")
+	rows, err := dbase.Query(ctx, "SELECT id, username, password, email FROM users")
 	if err != nil {
 		fmt.Println("Error fetching users:", err)
 		return nil
@@ -57,7 +43,7 @@ func ListUsers() []models.User {
 
 	for rows.Next() {
 		var usuario models.User
-		err := rows.Scan(&usuario.Username, &usuario.Password, &usuario.Email)
+		err := rows.Scan(&usuario.ID, &usuario.Username, &usuario.Password, &usuario.Email)
 		if err != nil {
 			fmt.Println("Error scanning row:", err)
 			continue
@@ -99,19 +85,29 @@ func ConectDB() {
 	}
 
 	fmt.Println("Tabela 'users' criada com sucesso!")
+}
 
-	for _, user := range listaUsuarios {
-		insertUserQuery := `
-		INSERT INTO users (username, password, email) 
-		VALUES ($1, $2, $3) 
-		ON CONFLICT (email) DO NOTHING;`
-
-		_, err := conn.Exec(context.Background(), insertUserQuery, user.Username, user.Password, user.Email)
-		if err != nil {
-			fmt.Println("Failed to insert user:", err)
-			os.Exit(1)
-		}
+func UpdateUser(id int, usuario *models.User) error {
+	ctx := context.Background()
+	params := make([]any, 0, 3)
+	query := "UPDATE users SET "
+	if usuario.Password != nil {
+		params = append(params, *usuario.Password)
+		query += fmt.Sprintf("password=$%d", len(params))
 	}
-
-	fmt.Println("Usuários inseridos com sucesso!")
+	if usuario.Email != nil {
+		if usuario.Password != nil {
+			query += ", "
+		}
+		params = append(params, *usuario.Email)
+		query += fmt.Sprintf("email=$%d", len(params))
+	}
+	params = append(params, id)
+	query += fmt.Sprintf(" WHERE id=$%d", len(params))
+	_, err := dbase.Exec(ctx, query, params...)
+	if err != nil {
+		fmt.Println("Error updating user:", err)
+		return err
+	}
+	return nil
 }

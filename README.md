@@ -99,3 +99,6 @@ Modificar a função CreatUser, FindUser and ListUser para o banco de dados atra
 Modificar a função CreatUser, FindUser and ListUser para o banco de dados atraves do pgx.
 
 ## TECH-7
+
+Crie uma rota de atualizar o usuário, onde será possivel alterar a senha e email do usuário.
+Além disso, todas as rotas, exceto a rota de autenticar deverão ser protegidas pelo Bearer token.
