@@ -99,3 +99,19 @@ Modificar a função CreatUser, FindUser and ListUser para o banco de dados atra
 Modificar a função CreatUser, FindUser and ListUser para o banco de dados atraves do pgx.
 
 ## TECH-7
+
+Crie uma rota de atualizar o usuário, onde será possivel alterar a senha e email do usuário.
+
+Além disso, todas as rotas, exceto a rota de autenticar deverão ser protegidas pelo Bearer token.
+
+## TECH-8
+
+Criar a rota get /user/:id com ela sendo criptografada.
+
+Usar uma lib de migração para criação e atualização de tabelas do banco de dados.
+
+https://github.com/golang-migrate/migrate
+
+## TECH-9
+
+adicionar teste unitário no código.

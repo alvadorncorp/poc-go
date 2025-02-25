@@ -5,20 +5,22 @@ import (
 )
 
 type User struct {
-	Username string `form:"username"`
-	Password string `form:"password"`
-	Email    string `form:"email"`
+	ID       int     `json:"id"`
+	Username *string `json:"username,omitempty"`
+	Password *string `json:"password,omitempty"`
+	Email    *string `json:"email,omitempty"`
 }
 
 func (user *User) EncryptPassword() error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword([]byte(*user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
-	user.Password = string(hash)
+	stringHash := string(hash)
+	user.Password = &stringHash
 	return nil
 }
 
 func (user *User) ComparePassword(password string) bool {
-	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) == nil
+	return bcrypt.CompareHashAndPassword([]byte(*user.Password), []byte(password)) == nil
 }

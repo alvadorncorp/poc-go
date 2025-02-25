@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-	db.Init()
 	db.ConectDB()
 	routes.HandleRequests()
 }
