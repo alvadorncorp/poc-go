@@ -31,6 +31,18 @@ func FindUser(email string) (models.User, error) {
 	return usuario, err
 }
 
+func FindUserByID(id int) (models.User, error) {
+	ctx := context.Background()
+	query := "SELECT id, username, password, email FROM users WHERE id=$1"
+	row := dbase.QueryRow(ctx, query, id)
+	var usuario models.User
+	err := row.Scan(&usuario.ID, &usuario.Username, &usuario.Password, &usuario.Email)
+	if err == pgx.ErrNoRows {
+		return models.User{}, errors.New("usuario nao encontrado")
+	}
+	return usuario, err
+}
+
 func ListUsers() []models.User {
 	var usuarios []models.User
 	ctx := context.Background()
@@ -51,6 +63,31 @@ func ListUsers() []models.User {
 		usuarios = append(usuarios, usuario)
 	}
 	return usuarios
+}
+
+func UpdateUser(id int, usuario *models.User) error {
+	ctx := context.Background()
+	params := make([]any, 0, 3)
+	query := "UPDATE users SET "
+	if usuario.Password != nil {
+		params = append(params, *usuario.Password)
+		query += fmt.Sprintf("password=$%d", len(params))
+	}
+	if usuario.Email != nil {
+		if usuario.Password != nil {
+			query += ", "
+		}
+		params = append(params, *usuario.Email)
+		query += fmt.Sprintf("email=$%d", len(params))
+	}
+	params = append(params, id)
+	query += fmt.Sprintf(" WHERE id=$%d", len(params))
+	_, err := dbase.Exec(ctx, query, params...)
+	if err != nil {
+		fmt.Println("Error updating user:", err)
+		return err
+	}
+	return nil
 }
 
 func ConectDB() {
@@ -85,29 +122,4 @@ func ConectDB() {
 	}
 
 	fmt.Println("Tabela 'users' criada com sucesso!")
-}
-
-func UpdateUser(id int, usuario *models.User) error {
-	ctx := context.Background()
-	params := make([]any, 0, 3)
-	query := "UPDATE users SET "
-	if usuario.Password != nil {
-		params = append(params, *usuario.Password)
-		query += fmt.Sprintf("password=$%d", len(params))
-	}
-	if usuario.Email != nil {
-		if usuario.Password != nil {
-			query += ", "
-		}
-		params = append(params, *usuario.Email)
-		query += fmt.Sprintf("email=$%d", len(params))
-	}
-	params = append(params, id)
-	query += fmt.Sprintf(" WHERE id=$%d", len(params))
-	_, err := dbase.Exec(ctx, query, params...)
-	if err != nil {
-		fmt.Println("Error updating user:", err)
-		return err
-	}
-	return nil
 }

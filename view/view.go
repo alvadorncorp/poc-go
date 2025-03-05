@@ -20,3 +20,11 @@ func NewViewUsuario(usuarios []models.User) []ViewUsuario {
 
 	return viewUsuarios
 }
+
+func NewViewUsuarioById(usuario models.User) ViewUsuario {
+	return ViewUsuario{
+		ID:       usuario.ID,
+		Username: *usuario.Username,
+		Email:    *usuario.Email,
+	}
+}

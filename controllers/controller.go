@@ -69,6 +69,19 @@ func DisplaysUser(c *gin.Context) {
 	c.JSON(200, view.NewViewUsuario(db.ListUsers()))
 }
 
+func DisplayUserId(c *gin.Context) {
+	idStr := c.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+
+	usuario, err := db.FindUserByID(int(id))
+	if err != nil {
+		c.JSON(404, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(200, view.NewViewUsuarioById(usuario))
+}
+
 func ModifyUser(c *gin.Context) {
 	var usuarioJSON models.User
 
