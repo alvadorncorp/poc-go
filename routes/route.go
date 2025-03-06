@@ -43,7 +43,7 @@ func HandleRequests() {
 	protected.Use(protectedHandler)
 	{
 		protected.GET("/", controllers.DisplaysUser)
-		protected.GET("/:id", controllers.DisplaysUser)
+		protected.GET("/:id", controllers.DisplayUserId)
 		protected.POST("/", controllers.RegisterUser)
 		protected.PATCH("/:id", controllers.ModifyUser)
 	}

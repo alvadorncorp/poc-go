@@ -106,7 +106,7 @@ Além disso, todas as rotas, exceto a rota de autenticar deverão ser protegidas
 
 ## TECH-8
 
-Criar a rota get /user/:id com ela sendo criptografada.
+Criar a rota get /user/:id com ela sendo autenticada.
 
 Usar uma lib de migração para criação e atualização de tabelas do banco de dados.
 
